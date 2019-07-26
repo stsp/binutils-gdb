@@ -68,7 +68,7 @@
    || (TYPE) == R_X86_64_32S \
    || (TYPE) == R_X86_64_64)
 #define I386_RELATIVE_RELOC_TYPE_P(TYPE) \
-  ((TYPE) == R_386_32 || (TYPE) == R_386_PC32)
+  ((TYPE) == R_386_32 || (TYPE) == R_386_PC32 || (TYPE) == R_386_SEG16)
 #define X86_RELATIVE_RELOC_TYPE_P(IS_X86_64, TYPE) \
   ((IS_X86_64) \
    ? X86_64_RELATIVE_RELOC_TYPE_P (TYPE) \
