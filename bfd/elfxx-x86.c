@@ -514,7 +514,7 @@ elf_x86_allocate_dynrelocs (struct elf_link_hash_entry *h, void *inf)
 	    goto keep;
 	}
 
-      h->dyn_relocs = NULL;
+//      h->dyn_relocs = NULL;
 
     keep: ;
     }

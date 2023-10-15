@@ -177,6 +177,7 @@
        && (H)->type == STT_GNU_IFUNC \
        && (R_TYPE) == POINTER_TYPE \
        && ((SEC)->flags & SEC_CODE) == 0) \
+   || (R_TYPE == R_386_SEG16) \
    || (ELIMINATE_COPY_RELOCS \
        && !bfd_link_pic (INFO) \
        && (H) != NULL \
@@ -213,6 +214,7 @@
 	 && !X86_SIZE_TYPE_P (IS_X86_64, R_TYPE)) \
 	|| ! SYMBOL_CALLS_LOCAL ((INFO), \
 				 (struct elf_link_hash_entry *) (EH)))) \
+   || (!bfd_is_abs_section (SEC) && R_TYPE == R_386_SEG16) \
    || (ELIMINATE_COPY_RELOCS \
        && !bfd_link_pic (INFO) \
        && (EH) != NULL \
