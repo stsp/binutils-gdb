@@ -10700,6 +10700,9 @@ lex_got (enum bfd_reloc_code_real *rel,
     { STRING_COMMA_LEN ("SIZE"),      { BFD_RELOC_SIZE32,
 					BFD_RELOC_SIZE32 },
       { .bitfield = { .imm32 = 1, .imm64 = 1 } }, false },
+    { STRING_COMMA_LEN ("SEG"),      { BFD_RELOC_386_SEG16,
+				       _dummy_first_bfd_reloc_code_real },
+      { .bitfield = { .imm16 = 1, .disp16 = 1 } }, false },
 #endif
     { STRING_COMMA_LEN ("PLTOFF"),   { _dummy_first_bfd_reloc_code_real,
 				       BFD_RELOC_X86_64_PLTOFF64 },
@@ -10792,8 +10795,11 @@ lex_got (enum bfd_reloc_code_real *rel,
 		{
 		  if (flag_code != CODE_64BIT)
 		    {
-		      types->bitfield.imm32 = 1;
-		      types->bitfield.disp32 = 1;
+		      if (!types->bitfield.imm16)
+			{
+			  types->bitfield.imm32 = 1;
+			  types->bitfield.disp32 = 1;
+			}
 		    }
 		  else
 		    *types = gotrel[j].types64;
@@ -10855,7 +10861,6 @@ x86_cons (expressionS *exp, int size)
 #if ((defined (OBJ_ELF) || defined (OBJ_MAYBE_ELF)) \
       && !defined (LEX_AT)) \
     || defined (TE_PE)
-  if (size == 4 || (object_64bit && size == 8))
     {
       /* Handle @GOTOFF and the like in an expression.  */
       char *save;
@@ -10900,9 +10905,9 @@ x86_cons (expressionS *exp, int size)
 	    }
 	}
     }
-  else
-#endif
+#else
     expression (exp);
+#endif
 
   intel_syntax = -intel_syntax;
 
@@ -15659,6 +15664,7 @@ tc_gen_reloc (asection *section ATTRIBUTE_UNUSED, fixS *fixp)
     case BFD_RELOC_386_TLS_LE:
     case BFD_RELOC_386_TLS_GOTDESC:
     case BFD_RELOC_386_TLS_DESC_CALL:
+    case BFD_RELOC_386_SEG16:
     case BFD_RELOC_X86_64_TLSGD:
     case BFD_RELOC_X86_64_TLSLD:
     case BFD_RELOC_X86_64_DTPOFF32:
